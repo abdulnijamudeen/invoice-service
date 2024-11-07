@@ -12,6 +12,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] PUBLIC_URL = {
+            "/h2-console/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            "/api/invoice"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -22,6 +30,6 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/h2-console/**", "/api/invoice", "/swagger-ui/**");
+        return web -> web.ignoring().requestMatchers(PUBLIC_URL);
     }
 }

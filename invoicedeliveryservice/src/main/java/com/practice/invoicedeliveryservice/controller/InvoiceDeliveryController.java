@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,8 @@ import java.util.Random;
 @RequestMapping("api")
 public class InvoiceDeliveryController {
     @PostMapping("invoice-delivery")
-    public ResponseEntity<String> deliverInvoice() {
+    public ResponseEntity<String> deliverInvoice(@RequestBody Object payload) {
+        log.info("Invoice payload from invoice service : {}", payload);
         var randomInt = new Random().nextInt(3);
         var response = switch (randomInt) {
             case 0 -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong.");
