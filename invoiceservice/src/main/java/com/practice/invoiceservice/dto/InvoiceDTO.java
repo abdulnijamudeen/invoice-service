@@ -7,10 +7,7 @@ import com.practice.invoiceservice.model.Invoice;
 
 import java.util.List;
 
-//@JsonIgnoreProperties({"buyer_party", "supplier_party"})
 public record InvoiceDTO(@JsonProperty("billing_header") BillingHeaderDTO billingHeaderDTO,
-//                         @JsonProperty("buyer_party") BuyerPartyDTO buyerPartyDTO,
-//                         @JsonProperty("supplier_party") SupplierPartyDTO supplierPartyDTO,
                          @JsonProperty("billing_lines") List<BillingLineDTO> billingLineDTOS) {
     public Invoice createEntity() {
         return mapBillingLines(Invoice

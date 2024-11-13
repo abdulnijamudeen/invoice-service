@@ -9,8 +9,6 @@ public class FlywayConfig {
     @Bean
     public FlywayMigrationStrategy flywayMigrationStrategy() {
         return flyway -> {
-            // Uncomment flyway.clean() to recreate schema
-//            flyway.clean();
             flyway.migrate();
             flyway.validate();
         };

@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class InvoiceServiceImplTest {
+class InvoiceServiceImplTest {
     @Autowired
     private InvoiceServiceImpl invoiceServiceImpl;
 

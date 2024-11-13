@@ -21,7 +21,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @SpringBootTest
-public class InvoiceDeliveryServiceImplTest {
+class InvoiceDeliveryServiceImplTest {
     @Autowired
     private InvoiceDeliveryServiceImpl invoiceDeliveryServiceImpl;
 
@@ -55,5 +55,28 @@ public class InvoiceDeliveryServiceImplTest {
 
         var actualResult = invoiceDeliveryServiceImpl.sendInvoice(invoice);
         Assertions.assertEquals(expectedResult, actualResult);
+        mockServer.verify();
+    }
+
+    @Test
+    void processInvoice_FailedResponse_Test() {
+
+        var invoice = Invoice.builder()
+                .billingHeader(BillingHeader.builder()
+                        .billingId("ABCD")
+                        .totalInvoiceAmount(new BigDecimal("70.0"))
+                        .build())
+                .build();
+        String expectedResult = "Failed to access Invoice delivery service : 500 Internal Server Error: \"Internal Server Error\"";
+
+        mockServer.expect(requestTo("http://localhost:8081/api/invoice-delivery"))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("Internal Server Error"));
+
+        String actualResult = invoiceDeliveryServiceImpl.sendInvoice(invoice);
+        Assertions.assertEquals(expectedResult, actualResult);
+        mockServer.verify();
     }
 }
